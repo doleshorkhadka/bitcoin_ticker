@@ -28,4 +28,4 @@ const List<String> kcryptoList = [
   'LTC',
 ];
 
-class CoinData {}
+const kapiKey = '';

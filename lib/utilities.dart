@@ -1,6 +1,7 @@
 // ignore_for_file: avoid_print, must_be_immutable
 
 import 'dart:convert';
+import 'package:bitcoin_ticker/coin_data.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -14,7 +15,7 @@ class DataServices {
 
   Future getData() async {
     String url =
-        'https://rest.coinapi.io/v1/exchangerate/$from/$to?apikey=315C905A-5834-48EC-9589-1AB5892AF2A0';
+        'https://rest.coinapi.io/v1/exchangerate/$from/$to?apikey=$kapiKey';
     try {
       http.Response response = await http.get(Uri.parse(url));
       if (response.statusCode == 200) {

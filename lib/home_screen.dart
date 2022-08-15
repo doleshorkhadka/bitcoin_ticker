@@ -8,7 +8,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'dart:io' show Platform;
 
 class HomeScreen extends StatefulWidget {
-  HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({Key? key}) : super(key: key);
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -115,14 +115,9 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-// class MainPage extends StatelessWidget {
-//   bool isLoading = false;
-//   @override
-//   Widget build(BuildContext context) =>
-//       isLoading ? LoadingScreen() : HomeScreen();
-// }
-
 class LoadingScreen extends StatelessWidget {
+  const LoadingScreen({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Center(
