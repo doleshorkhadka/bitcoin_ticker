@@ -18,6 +18,7 @@ class _HomeScreenState extends State<HomeScreen> {
   String selectedValue = 'USD';
   List<dynamic> responseValue = [];
   List<String> coinValue = [];
+  bool isLoading = false;
 
   CupertinoPicker IOSpicker() {
     List<Widget> pickerItems = [];
@@ -51,6 +52,9 @@ class _HomeScreenState extends State<HomeScreen> {
       items: dropDownItems,
       menuMaxHeight: 200,
       onChanged: (value) async {
+        setState(() {
+          isLoading = true;
+        });
         var rateValue = [];
         for (int i = 0; i < 3; i++) {
           responseValue.add(
@@ -67,45 +71,74 @@ class _HomeScreenState extends State<HomeScreen> {
                 : coinValue.add(rateValue[i].toStringAsFixed(3));
           }
         });
+        setState(() {
+          isLoading = false;
+        });
       },
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Expanded(
-          flex: 4,
-          child: Column(
+    return isLoading
+        ? LoadingScreen()
+        : Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              ReusedCard(
-                  text:
-                      '1 BTC = ${coinValue.isEmpty ? '?' : coinValue[0]} $selectedValue'),
-              ReusedCard(
-                  text:
-                      '1 ETH = ${coinValue.isEmpty ? '?' : coinValue[1]} $selectedValue'),
-              ReusedCard(
-                  text:
-                      '1 LTH = ${coinValue.isEmpty ? '?' : coinValue[2]} $selectedValue'),
+              Expanded(
+                flex: 4,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    ReusedCard(
+                        text:
+                            '1 BTC = ${coinValue.isEmpty ? '?' : coinValue[0]} $selectedValue'),
+                    ReusedCard(
+                        text:
+                            '1 ETH = ${coinValue.isEmpty ? '?' : coinValue[1]} $selectedValue'),
+                    ReusedCard(
+                        text:
+                            '1 LTH = ${coinValue.isEmpty ? '?' : coinValue[2]} $selectedValue'),
+                  ],
+                ),
+              ),
+              Expanded(
+                child: Container(
+                  color: Colors.blue,
+                  child: Center(
+                    child: Platform.isAndroid ? IOSpicker() : AndroidPicker(),
+                  ),
+                ),
+              ),
             ],
-          ),
-        ),
-        Expanded(
-          child: Container(
-            color: Colors.blue,
-            child: Center(
-              child: Platform.isAndroid ? IOSpicker() : AndroidPicker(),
-            ),
-          ),
-        ),
-      ],
-    );
+          );
   }
+}
 
-  SpinKitCubeGrid showSimpleDialogue(BuildContext context) {
-    return SpinKitCubeGrid(color: Colors.blue);
+// class MainPage extends StatelessWidget {
+//   bool isLoading = false;
+//   @override
+//   Widget build(BuildContext context) =>
+//       isLoading ? LoadingScreen() : HomeScreen();
+// }
+
+class LoadingScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: SpinKitCubeGrid(
+        itemBuilder: (context, index) {
+          final colors = [
+            Colors.green,
+            Colors.blueAccent,
+            Colors.deepOrange,
+            Colors.purple,
+            Colors.black
+          ];
+          final color = colors[index % colors.length];
+          return DecoratedBox(decoration: BoxDecoration(color: color));
+        },
+      ),
+    );
   }
 }
